@@ -1,0 +1,7 @@
+{
+  "name": "hydrooj-hitokoto-google-sheet",
+  "version": "0.0.2",
+  "description": "overwrite hydrooj homepage's hitokoto with chosen google sheet",
+  "main": "index.ts",
+  "author": "https://github.com/Bryan0324"
+}

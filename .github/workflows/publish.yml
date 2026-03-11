@@ -1,63 +1,29 @@
-name: Publish to npm (Trusted Publishing)
+name: Release
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-    
     permissions:
-      contents: read
-      id-token: write
-    
+      contents: write    # 寫入 Git 標籤與 Release
+      issues: write      # 讓 semantic-release 在 Issue 留言
+      pull-requests: write
+      id-token: write    # 關鍵：啟用 OIDC Trusted Publishing
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '24'
           # Required so npm CLI targets the correct registry and can perform OIDC auth
           registry-url: 'https://registry.npmjs.org'
-        
-
-      # Optional: ensure package.json version matches the release tag (e.g. v1.0.2)
-      - name: Sync package version from tag
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          npm install -g npm@latest
-          TAG="${GITHUB_REF_NAME#v}"
-          CURR=$(node -p "require('./package.json').version")
-          echo "Tag: $TAG | package.json: $CURR"
-          if [ "$CURR" != "$TAG" ]; then
-            echo "Updating package.json version to $TAG"
-            npm version --no-git-tag-version "$TAG"
-          else
-            echo "Version already $TAG; skipping version update"
-          fi
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-      
-      - name: Publish to npm with Trusted Publishing
+      - run: npm install -g npm@latest # 點睛之筆 更新 npm 版本 github action 預設的 npm 版本過舊 會導致 publish 失敗 我被坑了好久
+      - run: npm install
+      - run: npm ci
+      - run: npx semantic-release
         env:
-          # Do NOT set NODE_AUTH_TOKEN for Trusted Publishing.
-          # Ensure the package is linked to this repo on npm and Trusted Publishers enabled.
-          NPM_CONFIG_PROVENANCE: 'true'
-        run: npm publish --provenance --access public
-
-    # Notes:
-    # - Enable GitHub Actions Trusted Publishing for your npm account/org
-    #   and link this repository to the package on npmjs.com (Required for first publish).
-    # - Do NOT provide NODE_AUTH_TOKEN when using Trusted Publishing.
-    # - If you prefer token-based publishing, replace the publish step with:
-    #     env:
-    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    #     run: npm publish --access public
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

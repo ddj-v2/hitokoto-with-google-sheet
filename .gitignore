@@ -1,0 +1,27 @@
+# 依賴套件 (絕對不能進 Git)
+node_modules/
+/npm-debug.log*
+/yarn-error.log*
+
+# 編譯產物 (建議不進 Git，由 CI 在發佈時產生)
+dist/
+lib/
+build/
+
+# 測試與覆蓋率報告
+coverage/
+*.lcov
+.nyc_output/
+
+# 敏感資訊 (雖然你現在用 Trusted Publisher 不需要 NPM_TOKEN，但還是要防範)
+.env
+.env.local
+.secret
+*.pem
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# semantic-release 暫存檔 (如果有用到的話)
+package-lock.json.bak

@@ -1,0 +1,21 @@
+# 排除所有隱藏檔案與資料夾
+.*
+!/.npmignore
+
+# 排除 CI 與開發工具設定
+.github/
+.vscode/
+node_modules/
+*.log
+
+# 排除測試與原始碼 (如果你的 build 結果在 dist/ 或 lib/)
+test/
+tests/
+src/
+__tests__/
+jest.config.js
+tsconfig.json
+
+# 排除 semantic-release 可能產生的檔案
+release.config.js
+.releaserc

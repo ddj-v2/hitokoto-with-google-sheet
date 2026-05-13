@@ -39,7 +39,7 @@ export default class HitokotoService extends Service {
     });
 
     constructor(ctx: Context, config: ReturnType<typeof HitokotoService.Config>) {
-        super(ctx, 'hydrooj-hitokoto-google-sheet');
+        super(ctx, 'hitokoto-with-google-sheet');
         hitokotoHandler.setConfig(config);
         ctx.Route('hitokoto', '/hitokoto', hitokotoHandler);
     }

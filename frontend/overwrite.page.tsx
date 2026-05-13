@@ -24,7 +24,19 @@ function createHitokotoSection(text: string, author: string): HTMLElement {
   body.className = 'section__body typo';
   
   const textPara = document.createElement('p');
-  textPara.textContent = text || '無法取得一言';
+  // Allow a limited set of HTML tags in the text (b, i, em, strong)
+  function sanitize(unsafe: string): string {
+    const tmp = document.createElement('div');
+    tmp.textContent = unsafe;
+    let escaped = tmp.innerHTML;
+    // restore simple inline tags
+    escaped = escaped.replace(/&lt;(\/?)(b|i|em|strong)&gt;/g, '<$1$2>');
+    /// restore <br/> tags for line breaks
+    escaped = escaped.replace(/&lt;br\/&gt;/g, '<br/>');
+    return escaped;
+  }
+
+  textPara.innerHTML = sanitize(text || '無法取得一言');
   
   const authorPara = document.createElement('p');
   authorPara.style.fontSize = 'smaller';

@@ -1,5 +1,5 @@
 {
-  "name": "@ddj-v2/hydrooj-hitokoto-google-sheet",
+  "name": "@ddj-v2/hitokoto-with-google-sheet",
   "version": "1.0.0",
   "description": "overwrite hydrooj homepage's hitokoto with chosen google sheet",
   "main": "index.ts",
@@ -13,6 +13,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ddj-v2/hydrooj-hitokoto-google-sheet.git"
+    "url": "https://github.com/ddj-v2/hitokoto-with-google-sheet.git"
   }
 }

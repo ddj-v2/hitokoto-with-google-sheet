@@ -33,6 +33,7 @@ function createHitokotoSection(text: string, author: string): HTMLElement {
     escaped = escaped.replace(/&lt;(\/?)(b|i|em|strong)&gt;/g, '<$1$2>');
     /// restore <br/> tags for line breaks
     escaped = escaped.replace(/&lt;br\/&gt;/g, '<br/>');
+    escaped = escaped.replace(/\n/g, '<br/>');
     return escaped;
   }
 
